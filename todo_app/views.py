@@ -3,14 +3,20 @@ from .serializers import TaskSerializer
 from .models import Task
 from rest_framework.response import Response
 from rest_framework import status
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
 
 
-class TaskCreateView(ModelViewSet):
+class TaskView(ModelViewSet):
     serializer_class = TaskSerializer
-    queryset = Task.objects.all()
+    queryset = Task.objects.filter(deleted=False)
+
+    def get_object(self):
+        task_id = self.kwargs.get('pk')
+        task = get_object_or_404(Task, pk=task_id)
+        return task
 
     def create(self, request, *args, **kwargs):
         serializer = TaskSerializer(data=request.data)
@@ -23,6 +29,20 @@ class TaskCreateView(ModelViewSet):
             )
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        task = self.get_object()
+        serializer =  TaskSerializer(instance=task, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+
+        task_instance = serializer.update(task, serializer.validated_data)
+        response_data = self.get_serializer(task_instance).data
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    def perform_destroy(self, instance):
+        instance.deleted = True
+        instance.save()
         
 
 

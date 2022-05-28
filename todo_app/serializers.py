@@ -6,9 +6,11 @@ class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = [
+            'id',
             'title',
             'description',
             'completed',
+            'created_at'
         ]
 
     def create(self, validated_data, **kwargs):
