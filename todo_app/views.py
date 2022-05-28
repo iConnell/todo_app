@@ -11,7 +11,10 @@ from django.shortcuts import get_object_or_404
 
 class TaskView(ModelViewSet):
     serializer_class = TaskSerializer
-    queryset = Task.objects.filter(deleted=False)
+
+    def get_queryset(self):
+        queryset = Task.objects.filter(deleted=False, created_by=self.request.user)
+        return queryset
 
     def get_object(self):
         task_id = self.kwargs.get('pk')
@@ -24,8 +27,9 @@ class TaskView(ModelViewSet):
 
         if serializer.is_valid():
             task = serializer.create(serializer.validated_data, created_by=user)
+            read_serializer = TaskSerializer(task)
             return Response(
-                serializer.data, status=status.HTTP_201_CREATED
+                read_serializer.data, status=status.HTTP_201_CREATED
             )
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

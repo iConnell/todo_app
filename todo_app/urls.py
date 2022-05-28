@@ -4,7 +4,7 @@ from .views import TaskView
 
 
 router = DefaultRouter()
-router.register('create/', TaskView)
+router.register('create/', TaskView, basename='tasks')
 
 urlpatterns = [
     path('', TaskView.as_view({
