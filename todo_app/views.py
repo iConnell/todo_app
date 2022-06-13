@@ -17,8 +17,9 @@ class TaskView(ModelViewSet):
         return queryset
 
     def get_object(self):
+        user = self.request.user
         task_id = self.kwargs.get('pk')
-        task = get_object_or_404(Task, pk=task_id)
+        task = get_object_or_404(Task, pk=task_id, created_by=user)
         return task
 
     def create(self, request, *args, **kwargs):
