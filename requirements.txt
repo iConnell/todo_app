@@ -3,3 +3,4 @@ gunicorn
 django-allauth
 dj-rest-auth
 djangorestframework
+whitenoise
