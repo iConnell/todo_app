@@ -5,3 +5,4 @@ dj-rest-auth
 djangorestframework
 whitenoise
 dj-database-url
+django-heroku
