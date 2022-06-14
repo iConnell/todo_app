@@ -4,3 +4,4 @@ django-allauth
 dj-rest-auth
 djangorestframework
 whitenoise
+dj-database-url
