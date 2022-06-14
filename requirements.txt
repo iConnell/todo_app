@@ -1,0 +1,6 @@
+Django
+rest_framework
+gunicorn
+django-allauth
+dj-rest-auth
+djangorestframework
