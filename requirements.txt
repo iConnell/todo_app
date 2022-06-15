@@ -6,3 +6,4 @@ djangorestframework
 whitenoise
 dj-database-url
 django-heroku
+django-cors-headers
