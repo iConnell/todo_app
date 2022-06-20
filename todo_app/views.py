@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from .serializers import TaskSerializer
+from .serializers import TaskCreateUpdateSerializer, TaskSerializer
 from .models import Task
 from rest_framework.response import Response
 from rest_framework import status
@@ -23,12 +23,12 @@ class TaskView(ModelViewSet):
         return task
 
     def create(self, request, *args, **kwargs):
-        serializer = TaskSerializer(data=request.data)
+        serializer = TaskCreateUpdateSerializer(data=request.data)
         user = request.user
 
         if serializer.is_valid():
             task = serializer.create(serializer.validated_data, created_by=user)
-            read_serializer = TaskSerializer(task)
+            read_serializer = self.get_serializer(task)
             return Response(
                 read_serializer.data, status=status.HTTP_201_CREATED
             )
@@ -37,7 +37,7 @@ class TaskView(ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         task = self.get_object()
-        serializer =  TaskSerializer(instance=task, data=request.data, partial=True)
+        serializer =  TaskCreateUpdateSerializer(instance=task, data=request.data, partial=True)
 
         serializer.is_valid(raise_exception=True)
 

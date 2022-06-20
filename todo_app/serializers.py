@@ -1,8 +1,13 @@
 from rest_framework.serializers import ModelSerializer
 from .models import Task
 
-
 class TaskSerializer(ModelSerializer):
+    class Meta:
+        model = Task
+        exclude = ['deleted']
+
+
+class TaskCreateUpdateSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = [

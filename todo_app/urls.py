@@ -12,6 +12,6 @@ urlpatterns = [
     }), name='task-create'),
     path('<int:pk>/', TaskView.as_view({
         'get': 'retrieve', 'patch': 'update', 'delete': 'destroy'
-    }), name='task_detail')
+    }), name='task-detail')
 
 ]
