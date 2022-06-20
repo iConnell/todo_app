@@ -9,9 +9,9 @@ router.register('create/', TaskView, basename='tasks')
 urlpatterns = [
     path('', TaskView.as_view({
         'post': 'create', 'get': 'list'
-    })),
+    }), name='task-create'),
     path('<int:pk>/', TaskView.as_view({
         'get': 'retrieve', 'patch': 'update', 'delete': 'destroy'
-    }))
+    }), name='task_detail')
 
 ]
