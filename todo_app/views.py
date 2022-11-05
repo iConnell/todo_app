@@ -1,5 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
-from .serializers import TaskCreateUpdateSerializer, TaskSerializer
+from rest_framework.views import APIView
+from .serializers import TaskCreateUpdateSerializer, TaskSerializer, CalculationSerializer
 from .models import Task
 from rest_framework.response import Response
 from rest_framework import status
@@ -51,3 +52,28 @@ class TaskView(ModelViewSet):
         
 
 
+class CalculationView(APIView):
+    serializer_class = CalculationSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        operation_type = serializer.validated_data.get('operation_type')
+        x = serializer.validated_data.get('x')
+        y = serializer.validated_data.get('y')
+
+        if operation_type == "addition":
+            result = x + y
+        elif operation_type == "subtraction":
+            result = x - y
+        elif operation_type == "multiplication":
+            result = x * y
+
+        response = {
+            "slackUsername": "iConnell",
+            "result": result,
+            "operation_type": operation_type,
+
+        }
+        return Response(response)

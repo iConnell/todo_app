@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import TaskView
+from .views import TaskView, CalculationView
 
 
 router = DefaultRouter()
@@ -12,6 +12,7 @@ urlpatterns = [
     }), name='task-create'),
     path('<int:pk>/', TaskView.as_view({
         'get': 'retrieve', 'patch': 'update', 'delete': 'destroy'
-    }), name='task-detail')
+    }), name='task-detail'),
+    path('eval/', CalculationView.as_view(), name='calculation')
 
 ]
